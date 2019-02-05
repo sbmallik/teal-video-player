@@ -29,10 +29,10 @@ $ npm install
 
 Certain parameters such as authentication and other internal variables are obtained from the environment variables and these are listed below:
 
-`SAUCE_USERNAME` - The username for the Sauce Labs account
-`SAUCE_ACCESS_KEY` - The access key for the above account
-`APPLITOOLS_API_KEY` - This key provides access to the Applitools Test Manager (and the Team within)
-`APPLITOOLS_BATCH_ID` - This value is used to group the tests by a specific criteria (like browser, platform, test-name etc)
+1. `SAUCE_USERNAME` - The username for the Sauce Labs account
+1. `SAUCE_ACCESS_KEY` - The access key for the above account
+1. `APPLITOOLS_API_KEY` - This key provides access to the Applitools Test Manager (and the Team within)
+1. `APPLITOOLS_BATCH_ID` - This value is used to group the tests by a specific criteria (like browser, platform, test-name etc)
 
 ### Running Tests
 
