@@ -43,7 +43,7 @@ describe('Visual Test - ', function () {
     eyes.setLogHandler(new ConsoleLogHandler(false));
     eyes.setSendDom(false);
     eyes.setHideScrollbars(true);
-    eyes.setMatchLevel(MatchLevel.Level2);
+    eyes.setMatchLevel(MatchLevel.Layout2);
     eyes.setForceFullPageScreenshot(false);
     eyes.setBatch('tangent-visual-tests-' + batchNumber, batchNumber || Date.now());
     console.log(`beforeEach done in ${startDate.end().summary}`);
