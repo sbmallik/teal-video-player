@@ -25,7 +25,7 @@ const saucelabs = new SauceLabs({
 
 jest.setTimeout(10 * 60 * 1000);
 
-describe('Visual Test Suite for Tangent', function () {
+describe('Visual Test - ', function () {
   let /** @type {WebDriver} */ driver, /** @type {Eyes} */ eyes, testName, startDateIt;
 
   beforeEach(async function () {
@@ -34,6 +34,10 @@ describe('Visual Test Suite for Tangent', function () {
     startDate.start();
 
     driver = await new Builder().withCapabilities(capabilities).usingServer(seleniumUrl).build();
+    driver.getSession().then(function(sessionid) {
+      driver.sessionID = sessionid.id_;
+      console.log(`SauceOnDemandSessionID = ${driver.sessionID}, Test name = ${testName.description}`);
+    });
 
     eyes = new Eyes();
     eyes.setLogHandler(new ConsoleLogHandler(false));
@@ -55,6 +59,16 @@ describe('Visual Test Suite for Tangent', function () {
       }, function() {});
     });
 
+    startDate.start();
+    await eyes.close(false).then((result) => {
+      if (result._isNew) {
+        console.log(`New baseline created: URL = ${result._appUrls._session}`);
+      } else {
+        expect(result._mismatches).toBe(0);
+      }
+    });
+    console.log(`eyes.close done in ${startDate.end().summary}`);
+
     if (eyes._isOpen) {
       await eyes.close();
     }
@@ -62,13 +76,9 @@ describe('Visual Test Suite for Tangent', function () {
     console.log(`afterEach done in ${startDate.end().summary}`);
   });
 
-  testName = it('Element level test', async function () {
+  testName = it('Navigation header element', async function () {
     const startDate = PerformanceUtils.start();
 
-    driver.getSession().then(function(sessionid) {
-      driver.sessionID = sessionid.id_;
-      console.log(`SauceOnDemandSessionID = ${driver.sessionID}, Test name = ${testName.description}`);
-    });
     const _driver = await eyes.open(driver, 'Eyes.SDK.JavaScript', testName.getFullName());
     console.log(`eyes.open done in ${startDate.end().summary}`);
 
@@ -91,16 +101,6 @@ describe('Visual Test Suite for Tangent', function () {
     startDate.start();
     await eyes.check(testName.description, Target.region(By.css('.gnt_n_w')));
     console.log(`eyes.check done in ${startDate.end().summary}`);
-
-    startDate.start();
-    await eyes.close(false).then((result) => {
-      if (result._isNew) {
-        console.log(`New baseline created: URL = ${result._appUrls._session}`);
-      } else {
-        expect(result._mismatches).toBe(0);
-      }
-    });
-    console.log(`eyes.close done in ${startDate.end().summary}`);
 
     console.log(`total time ${startDateIt.end().summary}`);
     expect(startDateIt.end().time).toBeLessThanOrEqual(10 * 60 * 1000);

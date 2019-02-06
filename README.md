@@ -34,6 +34,8 @@ Certain parameters such as authentication and other internal variables are obtai
 1. `APPLITOOLS_API_KEY` - This key provides access to the Applitools Test Manager (and the Team within)
 1. `APPLITOOLS_BATCH_ID` - This value is used to group the tests by a specific criteria (like browser, platform, test-name etc)
 
+All these variables must be exported so that it allows all child processes to inherit. These are generally set inside the user profile.
+
 ### Running Tests
 
 By default Jest tests runs against a local `chromedriver`, but in the current repository local execution isn't supported at the moment. Instead the tests are executed remotely in Sauce Labs cloud based environment. At the moment this is supported for desktop environment only and the initial release will support Chrome browser.

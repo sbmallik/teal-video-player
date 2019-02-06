@@ -43,7 +43,7 @@ describe('Visual Test - ', function () {
     eyes.setLogHandler(new ConsoleLogHandler(false));
     eyes.setSendDom(false);
     eyes.setHideScrollbars(true);
-    eyes.setMatchLevel(MatchLevel.Layout2);
+    eyes.setMatchLevel(MatchLevel.Strict);
     eyes.setForceFullPageScreenshot(false);
     eyes.setBatch('tangent-visual-tests-' + batchNumber, batchNumber || Date.now());
     console.log(`beforeEach done in ${startDate.end().summary}`);
@@ -76,7 +76,7 @@ describe('Visual Test - ', function () {
     console.log(`afterEach done in ${startDate.end().summary}`);
   });
 
-  testName = it('Entire Viewport', async function () {
+  testName = it('Hero-3-up element', async function () {
     const startDate = PerformanceUtils.start();
 
     const _driver = await eyes.open(driver, 'Eyes.SDK.JavaScript', testName.getFullName());
@@ -98,15 +98,8 @@ describe('Visual Test - ', function () {
     await _driver.executeScript("document.querySelector('#ad-slot-7103-in-indianapolis-C1532-poster_front-homepage-9').setAttribute('style', 'display:none')");
     console.log(`Top poster AD element was detected and disabled in ${startDate.end().summary}`);
 
-/*
-    // Trim the page header for full page screenshot
     startDate.start();
-    await eyes.setImageCut(new FixedCutProvider(121, 0, 0, 0));
-    console.log(`eyes.setImageCut done in ${startDate.end().summary}`);
-*/
-
-    startDate.start();
-    await eyes.check(testName.description, Target.window());
+    await eyes.check(testName.description, Target.region(By.css('.gnt_m_hero')));
     console.log(`eyes.check done in ${startDate.end().summary}`);
 
     console.log(`total time ${startDateIt.end().summary}`);
