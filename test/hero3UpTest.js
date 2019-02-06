@@ -10,6 +10,7 @@ const SauceLabs = require('saucelabs');
 const username = process.env.SAUCE_USERNAME;
 const password = process.env.SAUCE_ACCESS_KEY;
 const batchNumber = process.env.APPLITOOLS_BATCH_ID;
+const apiKey = process.env.APPLITOOLS_API_KEY;
 const seleniumUrl = `http://${username}:${password}@ondemand.saucelabs.com:4444/wd/hub`;
 
 const capabilities = {
@@ -41,6 +42,7 @@ describe('Visual Test - ', function () {
 
     eyes = new Eyes();
     eyes.setLogHandler(new ConsoleLogHandler(false));
+    eyes.setApiKey(apiKey);
     eyes.setSendDom(false);
     eyes.setHideScrollbars(true);
     eyes.setMatchLevel(MatchLevel.Layout2);
