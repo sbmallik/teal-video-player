@@ -46,28 +46,28 @@ The following test execution options are available:
 
 The following command executes all test files having names like `*.test.js`.
 ```
-npm test -- --detectOpenHandles
+$ npm test -- --detectOpenHandles
 ```
 
 #### Filtering tests
 
 In order to filter tests by filename a flag is added that accepts a regular expression of the `test-spec`. Please note this can be the name string located in either `describe` or `it` blocks. Therefore the command gets modified to:
 ```
-npm test -- --detectOpenHandles -t="<reguar-expression>"
+$ npm test -- --detectOpenHandles -t="<reguar-expression>"
 ```
 
 #### Disabling the code output
 
 Optionally the test logs can be disabled (with the exception of errors) by using this flag:
 ```
-npm test -- --detectOpenHandles --silent
+$ npm test -- --detectOpenHandles --silent
 ```
 
 #### Parallel execution
 
-An easy way to set the parallel test execution is to ignore the cache. By default the cache is used and the tests are executed sequentially. This is achieved by using a command line parameter as below:
+An easy way to set the parallel test execution is to ignore the cache as mentioned in this [issue link](https://github.com/facebook/jest/issues/5818). By default the cache is used and the tests are executed sequentially. This is achieved by using a command line parameter as below:
 ```
-npm test -- --detectOpenHandles --no-cache
+$ npm test -- --detectOpenHandles --no-cache
 ```
 
 This repository will be used for demonstration pupose only - therefore no *Continuous Integration* code (Jenkins Pipeline for example) was added. 
