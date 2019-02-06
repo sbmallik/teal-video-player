@@ -63,4 +63,11 @@ Optionally the test logs can be disabled (with the exception of errors) by using
 npm test -- --detectOpenHandles --silent
 ```
 
-This repository will be used as a demo repository - therefore no *Continuous Integration* code exists. 
+#### Parallel execution
+
+An easy way to set the parallel test execution is to ignore the cache. By default the cache is used and the tests are executed sequentially. This is achieved by using a command line parameter as below:
+```
+npm test -- --detectOpenHandles --no-cache
+```
+
+This repository will be used for demonstration pupose only - therefore no *Continuous Integration* code (Jenkins Pipeline for example) was added. 
