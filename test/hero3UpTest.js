@@ -80,6 +80,7 @@ describe('Visual Test - ', function () {
 
   testName = it('Hero-3-up element', async function () {
     const startDate = PerformanceUtils.start();
+    const highImpactAd = '#ad-slot-7103-in-indianapolis-C1532-high_impact-homepage-1';
 
     const _driver = await eyes.open(driver, 'Eyes.SDK.JavaScript', testName.getFullName());
     console.log(`eyes.open done in ${startDate.end().summary}`);
@@ -89,10 +90,12 @@ describe('Visual Test - ', function () {
     console.log(`driver.get done in ${startDate.end().summary}`);
 
     startDate.start();
-    await _driver.findElement(By.css('#ad-slot-7103-in-indianapolis-C1532-high_impact-homepage-1')).then(async function(element) {
+    await _driver.findElement(By.css(highImpactAd)).then(async function(element) {
       await _driver.wait(until.elementIsVisible(element), 30000);
     });
-    await _driver.executeScript("document.querySelector('#ad-slot-7103-in-indianapolis-C1532-high_impact-homepage-1').setAttribute('style', 'display:none')");
+    await _driver.executeScript(function(pageElement) {
+      document.querySelector(pageElement).setAttribute('style', 'display:none')
+    }, [highImpactAd]);
     console.log(`High impact AD element was detected and disabled in ${startDate.end().summary}`);
 
     startDate.start();
