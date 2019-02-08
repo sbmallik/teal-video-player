@@ -78,7 +78,7 @@ describe('Visual Test - ', function () {
     console.log(`afterEach done in ${startDate.end().summary}`);
   });
 
-  testName = it('Navigation header element', async function () {
+  testName = it('Page header element', async function () {
     const startDate = PerformanceUtils.start();
 
     const _driver = await eyes.open(driver, 'Eyes.SDK.JavaScript', testName.getFullName());
@@ -87,18 +87,6 @@ describe('Visual Test - ', function () {
     startDate.start();
     await _driver.get('https://www.indystar.com?tangent');
     console.log(`driver.get done in ${startDate.end().summary}`);
-
-    startDate.start();
-    await _driver.findElement(By.css('#ad-slot-7103-in-indianapolis-C1532-high_impact-homepage-1')).then(async function(element) {
-      await _driver.wait(until.elementIsVisible(element), 30000);
-    });
-    await _driver.executeScript("document.querySelector('#ad-slot-7103-in-indianapolis-C1532-high_impact-homepage-1').setAttribute('style', 'display:none')");
-    console.log(`High impact AD element was detected and disabled in ${startDate.end().summary}`);
-
-    startDate.start();
-    await _driver.wait(until.elementLocated(By.css('#ad-slot-7103-in-indianapolis-C1532-poster_front-homepage-9')), 10000);
-    await _driver.executeScript("document.querySelector('#ad-slot-7103-in-indianapolis-C1532-poster_front-homepage-9').setAttribute('style', 'display:none')");
-    console.log(`Top poster AD element was detected and disabled in ${startDate.end().summary}`);
 
     startDate.start();
     await eyes.check(testName.description, Target.region(By.css('.gnt_n_w')));
