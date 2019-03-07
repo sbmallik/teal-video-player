@@ -1,30 +1,12 @@
 'use strict';
 
-const { Builder, By, until } = require('selenium-webdriver');
-const { ConsoleLogHandler, PerformanceUtils } = require('@applitools/eyes-common');
-const { Eyes, Target } = require('@applitools/eyes-selenium');
-const FixedCutProvider =  require('@applitools/eyes-sdk-core').FixedCutProvider;
-const MatchLevel =  require('@applitools/eyes-sdk-core').MatchLevel;
-const SauceLabs = require('saucelabs');
+const utils = require('../lib/utils.js');
+const {
+  PerformanceUtils, By, until, Eyes, Target, FixedCutProvider
+} = require('../lib/constants.js');
+let tools = require('../lib/methods.js');
 
-const username = process.env.SAUCE_USERNAME;
-const password = process.env.SAUCE_ACCESS_KEY;
-const batchNumber = process.env.APPLITOOLS_BATCH_ID;
-const apiKey = process.env.APPLITOOLS_API_KEY;
-const seleniumUrl = `http://${username}:${password}@ondemand.saucelabs.com:4444/wd/hub`;
-
-const capabilities = {
-  'browserName': 'chrome',
-  'version': '66',
-  'platform': 'macOS 10.12',
-  'screenResolution': '1600x1200'
-};
-const saucelabs = new SauceLabs({
-  username: username,
-  password: password
-});
-
-jest.setTimeout(10 * 60 * 1000);
+jest.setTimeout(utils.TEST_TIMEOUT);
 
 describe('Visual Test - ', function () {
   let /** @type {WebDriver} */ driver, /** @type {Eyes} */ eyes, testName, startDateIt;
@@ -33,33 +15,34 @@ describe('Visual Test - ', function () {
     startDateIt = PerformanceUtils.start();
     const startDate = PerformanceUtils.start();
     startDate.start();
-
-    driver = await new Builder().withCapabilities(capabilities).usingServer(seleniumUrl).build();
-    driver.getSession().then(function(sessionid) {
-      driver.sessionID = sessionid.id_;
-      console.log(`SauceOnDemandSessionID = ${driver.sessionID}, Test name = ${testName.description}`);
-    });
-
-    eyes = new Eyes();
-    eyes.setLogHandler(new ConsoleLogHandler(false));
-    eyes.setApiKey(apiKey);
-    eyes.setSendDom(false);
-    eyes.setHideScrollbars(true);
-    eyes.setMatchLevel(MatchLevel.Strict);
-    eyes.setForceFullPageScreenshot(false);
-    eyes.setBatch('tangent-visual-tests-' + batchNumber, batchNumber || Date.now());
+    driver = await tools.driverInit(testName.description);
+    eyes = await tools.eyesInit();
     console.log(`beforeEach done in ${startDate.end().summary}`);
   });
 
   afterEach(async function () {
     const startDate = PerformanceUtils.start();
-    driver.getSession().then(function(session) {
-      console.log(`SauceOnDemandSessionID= + ${session.id_}, Test name = ${testName.description}, Test status = ${testName.status()}`);
-      saucelabs.updateJob(session.id_, {
-        passed: testName.status() === 'passed',
-        name: testName.description
-      }, function() {});
-    });
+    startDate.start();
+    await tools.updateSauce(driver, testName.description, testName.status());
+    await driver.quit();
+    console.log(`afterEach done in ${startDate.end().summary}`);
+    console.log(`total time ${startDateIt.end().summary}`);
+    expect(startDateIt.end().time).toBeLessThanOrEqual(utils.TEST_TIMEOUT);
+  });
+
+  testName = it('Page header element', async function () {
+    const startDate = PerformanceUtils.start();
+
+    const _driver = await eyes.open(driver, 'Eyes.SDK.JavaScript', testName.getFullName());
+    console.log(`eyes.open done in ${startDate.end().summary}`);
+
+    startDate.start();
+    await _driver.get(utils.BASE_URL);
+    console.log(`driver.get done in ${startDate.end().summary}`);
+
+    startDate.start();
+    await eyes.check(testName.description, Target.region(By.css('.gnt_n_w')));
+    console.log(`eyes.check done in ${startDate.end().summary}`);
 
     startDate.start();
     await eyes.close(false).then((result) => {
@@ -70,30 +53,6 @@ describe('Visual Test - ', function () {
       }
     });
     console.log(`eyes.close done in ${startDate.end().summary}`);
-
-    if (eyes._isOpen) {
-      await eyes.close();
-    }
-    await driver.quit();
-    console.log(`afterEach done in ${startDate.end().summary}`);
-  });
-
-  testName = it('Page header element', async function () {
-    const startDate = PerformanceUtils.start();
-
-    const _driver = await eyes.open(driver, 'Eyes.SDK.JavaScript', testName.getFullName());
-    console.log(`eyes.open done in ${startDate.end().summary}`);
-
-    startDate.start();
-    await _driver.get('https://www.indystar.com?tangent');
-    console.log(`driver.get done in ${startDate.end().summary}`);
-
-    startDate.start();
-    await eyes.check(testName.description, Target.region(By.css('.gnt_n_w')));
-    console.log(`eyes.check done in ${startDate.end().summary}`);
-
-    console.log(`total time ${startDateIt.end().summary}`);
-    expect(startDateIt.end().time).toBeLessThanOrEqual(10 * 60 * 1000);
   });
 
 });

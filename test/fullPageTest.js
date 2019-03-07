@@ -1,30 +1,12 @@
 'use strict';
 
-const { Builder, By, until } = require('selenium-webdriver');
-const { ConsoleLogHandler, PerformanceUtils } = require('@applitools/eyes-common');
-const { Eyes, Target } = require('@applitools/eyes-selenium');
-const FixedCutProvider =  require('@applitools/eyes-sdk-core').FixedCutProvider;
-const MatchLevel =  require('@applitools/eyes-sdk-core').MatchLevel;
-const SauceLabs = require('saucelabs');
+const utils = require('../lib/utils.js');
+const {
+  PerformanceUtils, By, until, Eyes, Target, FixedCutProvider
+} = require('../lib/constants.js');
+let tools = require('../lib/methods.js');
 
-const username = process.env.SAUCE_USERNAME;
-const password = process.env.SAUCE_ACCESS_KEY;
-const batchNumber = process.env.APPLITOOLS_BATCH_ID;
-const apiKey = process.env.APPLITOOLS_API_KEY;
-const seleniumUrl = `http://${username}:${password}@ondemand.saucelabs.com:4444/wd/hub`;
-
-const capabilities = {
-  'browserName': 'chrome',
-  'version': '66',
-  'platform': 'macOS 10.12',
-  'screenResolution': '1600x1200'
-};
-const saucelabs = new SauceLabs({
-  username: username,
-  password: password
-});
-
-jest.setTimeout(10 * 60 * 1000);
+jest.setTimeout(utils.TEST_TIMEOUT);
 
 describe('Visual Test - ', function () {
   let /** @type {WebDriver} */ driver, /** @type {Eyes} */ eyes, testName, startDateIt;
@@ -33,67 +15,38 @@ describe('Visual Test - ', function () {
     startDateIt = PerformanceUtils.start();
     const startDate = PerformanceUtils.start();
     startDate.start();
-
-    driver = await new Builder().withCapabilities(capabilities).usingServer(seleniumUrl).build();
-    driver.getSession().then(function(sessionid) {
-      driver.sessionID = sessionid.id_;
-      console.log(`SauceOnDemandSessionID = ${driver.sessionID}, Test name = ${testName.description}`);
-    });
-
-    eyes = new Eyes();
-    eyes.setLogHandler(new ConsoleLogHandler(false));
-    eyes.setApiKey(apiKey);
-    eyes.setSendDom(false);
-    eyes.setHideScrollbars(true);
-    eyes.setMatchLevel(MatchLevel.Layout2);
+    driver = await tools.driverInit(testName.description);
+    eyes = await tools.eyesInit();
     eyes.setForceFullPageScreenshot(true);
-    eyes.setBatch('tangent-visual-tests-' + batchNumber, batchNumber || Date.now());
     console.log(`beforeEach done in ${startDate.end().summary}`);
   });
 
   afterEach(async function () {
     const startDate = PerformanceUtils.start();
-    driver.getSession().then(function(session) {
-      console.log(`SauceOnDemandSessionID= + ${session.id_}, Test name = ${testName.description}, Test status = ${testName.status()}`);
-      saucelabs.updateJob(session.id_, {
-        passed: testName.status() === 'passed',
-        name: testName.description
-      }, function() {});
-    });
-
     startDate.start();
-    await eyes.close(false).then((result) => {
-      if (result._isNew) {
-        console.log(`New baseline created: URL = ${result._appUrls._session}`);
-      } else {
-        expect(result._mismatches).toBe(0);
-      }
-    });
-    console.log(`eyes.close done in ${startDate.end().summary}`);
-
-    if (eyes._isOpen) {
-      await eyes.close();
-    }
+    await tools.updateSauce(driver, testName.description, testName.status());
     await driver.quit();
     console.log(`afterEach done in ${startDate.end().summary}`);
+    console.log(`total time ${startDateIt.end().summary}`);
+    expect(startDateIt.end().time).toBeLessThanOrEqual(utils.TEST_TIMEOUT);
   });
 
   testName = it.skip('Full Page', async function () {
     const startDate = PerformanceUtils.start();
-    const highImpactAd = '#ad-slot-7103-in-indianapolis-C1532-high_impact-homepage-1';
-    const topPosterAd = '#ad-slot-7103-in-indianapolis-C1532-poster_front-homepage-9';
-    const posterScrollAd = '#ad-slot-7103-in-indianapolis-C1532-poster_scroll_front-homepage-10';
+    const highImpactAd = utils.HIGH_IMPACT_AD;
+    const topPosterAd = utils.TOP_POSTER_AD;
+    const posterScrollAd = utils.POSTER_SCROLL_AD;
 
     const _driver = await eyes.open(driver, 'Eyes.SDK.JavaScript', testName.getFullName());
     console.log(`eyes.open done in ${startDate.end().summary}`);
 
     startDate.start();
-    await _driver.get('https://www.indystar.com?tangent');
+    await _driver.get(utils.BASE_URL);
     console.log(`driver.get done in ${startDate.end().summary}`);
 
     startDate.start();
     await _driver.findElement(By.css(highImpactAd)).then(async function(element) {
-      await _driver.wait(until.elementIsVisible(element), 30000);
+      await _driver.wait(until.elementIsVisible(element), utils.ELEMENT_TIMEOUT);
     });
     await _driver.executeScript(function(pageElement) {
       document.querySelector(pageElement).setAttribute('style', 'display:none');
@@ -101,7 +54,7 @@ describe('Visual Test - ', function () {
     console.log(`High impact AD element was detected and disabled in ${startDate.end().summary}`);
 
     startDate.start();
-    await _driver.wait(until.elementLocated(By.css(topPosterAd)), 10000);
+    await _driver.wait(until.elementLocated(By.css(topPosterAd)), utils.ELEMENT_TIMEOUT);
     await _driver.executeScript(function(pageElement) {
       document.querySelector(pageElement).setAttribute('style', 'display:none');
     }, [topPosterAd]);
@@ -110,7 +63,7 @@ describe('Visual Test - ', function () {
     startDate.start();
     await _driver.executeScript("window.scrollBy(0, 4 * window.innerHeight)");
     await _driver.findElement(By.css(posterScrollAd)).then(async function(element) {
-      await _driver.wait(until.elementIsVisible(element), 30000);
+      await _driver.wait(until.elementIsVisible(element), utils.ELEMENT_TIMEOUT);
     });
     await _driver.executeScript(function(pageElement) {
       document.querySelector(pageElement).setAttribute('style', 'display:none');
@@ -126,8 +79,15 @@ describe('Visual Test - ', function () {
     await eyes.check(testName.description, Target.window());
     console.log(`eyes.check done in ${startDate.end().summary}`);
 
-    console.log(`total time ${startDateIt.end().summary}`);
-    expect(startDateIt.end().time).toBeLessThanOrEqual(10 * 60 * 1000);
+    startDate.start();
+    await eyes.close(false).then((result) => {
+      if (result._isNew) {
+        console.log(`New baseline created: URL = ${result._appUrls._session}`);
+      } else {
+        expect(result._mismatches).toBe(0);
+      }
+    });
+    console.log(`eyes.close done in ${startDate.end().summary}`)
   });
 
 });
