@@ -19,7 +19,7 @@ describe('Visual Test', function () {
     done();
   });
 
-  testName = it('Visual Grid Demo', async (done) => {
+  testName = test('Visual Grid Demo', async (done) => {
     eyes = await tools.eyesVisualGridInit();
 
     const configuration = new SeleniumConfiguration();

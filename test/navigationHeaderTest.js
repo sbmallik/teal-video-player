@@ -1,7 +1,8 @@
 'use strict';
 
 const {
-  PerformanceUtils, By, until, Eyes, Target, FixedCutProvider, BASE_URL, TEST_TIMEOUT
+  PerformanceUtils, By, until, Eyes, Target, FixedCutProvider,
+  BASE_URL, NAV_HEADER, TEST_TIMEOUT, ELEMENT_TIMEOUT
 } = require('../lib/constants.js');
 const tools = require('../lib/utils.js');
 
@@ -31,7 +32,7 @@ describe('Visual Test - ', function () {
     done();
   });
 
-  testName = it('Page header element', async (done) => {
+  testName = test('Page header element', async (done) => {
     const startDate = PerformanceUtils.start();
 
     const _driver = await eyes.open(driver, 'Eyes.SDK.JavaScript', testName.getFullName());
@@ -42,17 +43,15 @@ describe('Visual Test - ', function () {
     console.log(`driver.get done in ${startDate.end().summary}`);
 
     startDate.start();
-    await eyes.check(testName.description, Target.region(By.css('.gnt_n_w')));
+    await tools.checkAlertBanner(_driver);
+    console.log(`Alert banner check completed in ${startDate.end().summary}`);
+
+    startDate.start();
+    await eyes.check(testName.description, Target.region(By.css(NAV_HEADER)));
     console.log(`eyes.check done in ${startDate.end().summary}`);
 
     startDate.start();
-    await eyes.close(false).then((result) => {
-      if (result._isNew) {
-        console.log(`New baseline created: URL = ${result._appUrls._session}`);
-      } else {
-        expect(result._mismatches).toBe(0);
-      }
-    });
+    await tools.validateResult(eyes);
     console.log(`eyes.close done in ${startDate.end().summary}`);
     done();
   });

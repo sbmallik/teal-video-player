@@ -33,6 +33,7 @@ Certain parameters such as authentication and other internal variables are obtai
 1. `SAUCE_ACCESS_KEY` - The access key for the above account
 1. `APPLITOOLS_API_KEY` - This key provides access to the Applitools Test Manager (and the Team within)
 1. `APPLITOOLS_BATCH_ID` - This value is used to group the tests by a specific criteria (like browser, platform, test-name etc)
+1. `APPLITOOLS_SERVER_URL` - This specifies the Applitools test manager URL
 
 All these variables must be exported so that it allows all child processes to inherit. These are generally set inside the user profile.
 

@@ -2,7 +2,7 @@
 
 const {
   PerformanceUtils, By, until, Eyes, Target, FixedCutProvider,
-  HIGH_IMPACT_AD, BASE_URL, TEST_TIMEOUT, ELEMENT_TIMEOUT
+  HIGH_IMPACT_AD, BASE_URL, HERO_3_UP_MODULE, TEST_TIMEOUT, ELEMENT_TIMEOUT
 } = require('../lib/constants.js');
 const tools = require('../lib/utils.js');
 
@@ -43,26 +43,15 @@ describe('Visual Test - ', function () {
     console.log(`driver.get done in ${startDate.end().summary}`);
 
     startDate.start();
-    await _driver.findElement(By.css(HIGH_IMPACT_AD)).then(async function(element) {
-      await _driver.wait(until.elementIsVisible(element), ELEMENT_TIMEOUT);
-    });
-    await _driver.executeScript(function(pageElement) {
-      document.querySelector(pageElement).setAttribute('style', 'display:none')
-    }, [HIGH_IMPACT_AD]);
+    await tools.suppressElement(_driver, HIGH_IMPACT_AD);
     console.log(`High impact AD element was detected and disabled in ${startDate.end().summary}`);
 
     startDate.start();
-    await eyes.check(testName.description, Target.region(By.css('.gnt_m_hero')));
+    await eyes.check(testName.description, Target.region(By.css(HERO_3_UP_MODULE)));
     console.log(`eyes.check done in ${startDate.end().summary}`);
 
     startDate.start();
-    await eyes.close(false).then((result) => {
-      if (result._isNew) {
-        console.log(`New baseline created: URL = ${result._appUrls._session}`);
-      } else {
-        expect(result._mismatches).toBe(0);
-      }
-    });
+    await tools.validateResult(eyes);
     console.log(`eyes.close done in ${startDate.end().summary}`);
     done();
   });
