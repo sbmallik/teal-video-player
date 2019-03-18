@@ -3,7 +3,7 @@
 ***
 ## Test Framework
 
-This repository contains the test code that executes *visual tests* for new _Tangent_ web pages. The JEST test runner is used (as this is used by developers as well). The visual testing will be performed by *Applitools*. The code uses Javascript, which in turn uses Selenium-Webdriver to deal with all user interactions with the web pages. *Sauce Labs* cloud based test platform is used to run the tests. 
+This repository contains the test code that executes *visual tests* for new _Tangent_ web pages. The JEST test runner is used (as this is used by developers as well). The visual testing will be performed by *Applitools*. The code uses Javascript, which in turn uses Selenium-Webdriver to deal with all user interactions with the web pages. *Sauce Labs* cloud based test platform is used to run the tests.
 
 ### Pre-requisites
 
@@ -52,6 +52,12 @@ $ npm test -- --detectOpenHandles
 
 #### Filtering tests
 
+To run a single test, simply add the test in the command line as follows:
+```
+$ npm test -- -t <test-name>
+```
+The `test-name` is the name of the test file to run. The test file name should comply to any qualifiers specified in the configuration.
+
 In order to filter tests by filename a flag is added that accepts a regular expression of the `test-spec`. Please note this can be the name string located in either `describe` or `it` blocks. Therefore the command gets modified to:
 ```
 $ npm test -- --detectOpenHandles -t="<reguar-expression>"
@@ -71,4 +77,4 @@ An easy way to set the parallel test execution is to ignore the cache as mention
 $ npm test -- --detectOpenHandles --no-cache
 ```
 
-This repository will be used for demonstration pupose only - therefore no *Continuous Integration* code (Jenkins Pipeline for example) was added. 
+This repository will be used for demonstration pupose only - therefore no *Continuous Integration* code (Jenkins Pipeline for example) was added.
