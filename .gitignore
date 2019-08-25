@@ -1,9 +1,9 @@
 # Integrated Dev Env files
-.idea
-.DS_Store
+**/.idea
+**/.DS_Store
 
 # Logs
-*.log*
+**/*.log
 
 # Runtime data
 *.pid
@@ -18,5 +18,4 @@
 node_modules
 
 #Run-time test reports
-reports
 coverage

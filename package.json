@@ -18,28 +18,24 @@
     "url": "https://github.com/sbmallik/eyes-jest"
   },
   "scripts": {
-    "test": "jest --detectOpenHandles --no-cache"
-  },
-  "jest": {
-    "extraGlobals": [
-      "Math"
-    ],
-    "testEnvironment": "jest-environment-node",
-    "testMatch": [
-      "**/test/**/*.js"
-    ]
+    "test:visual": "npm run test:visual-generate && jest --config ./test/visual/jestVisualConfig.json",
+    "test:visual-generate": "node test/visual/lib/generate.js --cleanTestDirectory",
+    "test:visual-no-generate": "jest --config ./test/visual/jestVisualConfig.json"
   },
   "dependencies": {
-    "@applitools/eyes-common": "^1.2.2",
-    "@applitools/eyes-sdk-core": "^4.9.1",
-    "@applitools/eyes-selenium": "^4.7.0"
+    "@applitools/eyes-selenium": "4.23.5"
   },
   "devDependencies": {
-    "chromedriver": "^2.45.0",
-    "jest": "^24.0.0",
-    "jest-environment-node": "^23.1.0",
-    "selenium-webdriver": "^4.0.0-alpha.1",
-    "saucelabs": "^1.5.0"
+    "chromedriver": "^75.1.0",
+    "jest": "^24.8.0",
+    "jest-cli": "^24.8.0",
+    "jest-junit": "^6.4.0",
+    "eslint": "^6.1.0",
+    "ejs-lint": "^0.3.0",
+    "selenium-webdriver": "4.0.0-alpha.4",
+    "sauce-connect-launcher": "^1.2.7",
+    "saucelabs": "^1.5.0",
+    "request": "^2.88.0"
   },
   "engines": {
     "node": ">=8.9.0"

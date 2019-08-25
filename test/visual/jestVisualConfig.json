@@ -1,0 +1,20 @@
+{
+  "silent": false,
+  "verbose": false,
+  "globalSetup": "./test/jest-utils/setup.js",
+  "globalTeardown": "./test/jest-utils/teardown.js",
+  "setupFilesAfterEnv": [
+    "./test/jest-utils/setupFilesAfterEnv.js",
+    "./test/visual/globalSettings.js"
+  ],
+  "testRegex": "test/visual/tests/.*\\.(visual.test)\\.js",
+  "testEnvironment": "node",
+  "reporters": [ "default", [
+    "jest-junit", {
+      "outputDirectory": "test/reports",
+      "outputName": "reportVisual.xml"
+    }]
+  ],
+  "maxConcurrency": 1,
+  "rootDir": "../../"
+}
