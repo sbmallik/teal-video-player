@@ -5,7 +5,7 @@
 module.exports = [
   {
     tags: ['suite:section'],
-    urlEnding: '/?no_ads=true', 
+    urlEnding: '/?no_ads=true',
     name: 'homepage-viewport'
   },
   {

@@ -4,7 +4,9 @@ module.exports = (configuration) => {
   return `
     'use strict';
 
+    ${configuration.defaultSelectorValue ? `
     const {By, Target} = requireAbs('/test/visual/lib/constants.js');
+    ` : ''}
     let utils = requireAbs('/test/visual/lib/utils.js');
     ${configuration.scrollToViewElement ? `
     const until = requireAbs('/test/visual/lib/constants.js').until;
@@ -47,7 +49,7 @@ module.exports = (configuration) => {
         ${configuration.defaultSelectorValue ? `
         await eyes.check('web-element', Target.region(${configuration.selector.function}('${configuration.selector.value || configuration.defaultSelectorValue}')));
         ` : `
-        await eyes.check('viewport', Target.window());
+        await eyes.checkWindow('viewport');
         `}
         await utils.validateLegacyResult(eyes);
       });

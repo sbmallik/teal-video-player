@@ -2,12 +2,9 @@
 
 const dateFormat = require('dateformat'),
       os = require('os'),
-      path = require('path'),
-      childProcess = require('child_process'),
       util = require('util'),
       sauce = requireAbs('test/jest-utils/sauce.js'),
-      exec = util.promisify(require('child_process').exec),
-      webdriver = require('selenium-webdriver');
+      exec = util.promisify(require('child_process').exec);
 
 module.exports = {
   /**
@@ -20,7 +17,7 @@ module.exports = {
   },
   /**
    * Starts sauce connect and waits till it is ready to proxy requests
-   * @param {Object} config - a configuration object retrieved from the 'config' package
+   * @param {string} tunnelId - sauce connect tunnel identifier
    * @returns {undefined} - nothing
    */
   async useSauceConnect(tunnelId) {
@@ -51,5 +48,5 @@ module.exports = {
     } catch (err) {
       console.error(err);
     }
-  },
+  }
 };

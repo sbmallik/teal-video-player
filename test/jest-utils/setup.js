@@ -14,10 +14,10 @@ module.exports = async function globalSetup() {
   }
 
   orchestrationHelper.setUniqueTestEnvironmentVariables();
-  capabilities[envSettings]['tags'] = 'uw-visual';
-  capabilities[envSettings]['build'] = `uw-${envSettings}-${process.env.UNIQUE_ID}`;
-  capabilities[envSettings]['tunnelIdentifier'] = envSettings;
-  process.env.CAPS = JSON.stringify(capabilities[envSettings]); 
+  capabilities[envSettings].tags = 'uw-visual';
+  capabilities[envSettings].build = `uw-${envSettings}-${process.env.UNIQUE_ID}`;
+  capabilities[envSettings].tunnelIdentifier = envSettings;
+  process.env.CAPS = JSON.stringify(capabilities[envSettings]);
   if (process.env.USE_SAUCE_CONNECT === 'true') {
     await orchestrationHelper.useSauceConnect(envSettings);
   }

@@ -1,8 +1,6 @@
 'use strict';
 
-const orchestrationHelper = requireAbs('test/jest-utils/orchestration-helper.js'),
-      util = require('util'),
-      exec = util.promisify(require('child_process').exec);
+const orchestrationHelper = requireAbs('test/jest-utils/orchestration-helper.js');
 
 module.exports = async function globalTearDown() {
   if (process.env.USE_SAUCE_CONNECT === 'true') {
