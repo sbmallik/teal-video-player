@@ -6,7 +6,7 @@
 **/*.log
 
 #package lock file
-./package-lock.json
+**/package-lock.json
 
 # Runtime data
 *.pid
