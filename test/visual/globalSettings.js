@@ -11,3 +11,6 @@ jest.setTimeout(TEST_TIMEOUT);
 global.capabilities = `${process.env.CAPS}`;
 global.appName = 'UW';
 global.ELEMENT_TIMEOUT = 30000;
+
+const nvaultutil = require('node-vault-utility');
+nvaultutil.applyGlobalVariablesFromFile();

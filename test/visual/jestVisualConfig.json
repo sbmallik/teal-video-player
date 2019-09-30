@@ -1,6 +1,5 @@
 {
-  "silent": false,
-  "verbose": false,
+  "silent": true,
   "globalSetup": "./test/jest-utils/setup.js",
   "globalTeardown": "./test/jest-utils/teardown.js",
   "setupFilesAfterEnv": [

@@ -13,6 +13,8 @@ module.exports = async function globalSetup() {
     envSettings = 'androidChrome';
   }
 
+  orchestrationHelper.fetchAndApplySecretsFromVault();
+  orchestrationHelper.determineNodeEnvironment();
   orchestrationHelper.setUniqueTestEnvironmentVariables();
   capabilities[envSettings].tags = 'uw-visual';
   capabilities[envSettings].build = `uw-${envSettings}-${process.env.UNIQUE_ID}`;

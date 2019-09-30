@@ -29,13 +29,16 @@
     "test:visual-no-generate": "jest --config ./test/visual/jestVisualConfig.json"
   },
   "dependencies": {
-    "@applitools/eyes-selenium": "4.23.5"
+    "config": "^3.2.2",
+    "node-vault-utility": "1.13.0"
   },
   "devDependencies": {
-    "chromedriver": "^75.1.0",
-    "jest": "^24.8.0",
-    "jest-cli": "^24.8.0",
-    "jest-junit": "^6.4.0",
+    "@applitools/eyes-selenium": "4.29.3",
+    "@applitools/visual-grid-client": "12.32.0",
+    "chromedriver": "^77.0.0",
+    "jest": "^24.9.0",
+    "jest-cli": "^24.9.0",
+    "jest-junit": "^8.0.0",
     "google-closure-compiler": "^20190819.0.0",
     "eslint": "^6.1.0",
     "ejs-lint": "^0.3.0",
@@ -58,7 +61,7 @@
     "gulp-zopfli-green": "^4.0.0",
     "htmlhint": "^0.11.0",
     "stylelint": "^10.1.0",
-    "selenium-webdriver": "4.0.0-alpha.4",
+    "selenium-webdriver": "4.0.0-alpha.5",
     "sauce-connect-launcher": "^1.2.7",
     "saucelabs": "^1.5.0",
     "request": "^2.88.0"

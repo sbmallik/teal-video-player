@@ -3,6 +3,8 @@
 const dateFormat = require('dateformat'),
       os = require('os'),
       util = require('util'),
+      childProcess = require('child_process'),
+      nvaultutil = require('node-vault-utility'),
       sauce = requireAbs('test/jest-utils/sauce.js'),
       exec = util.promisify(require('child_process').exec);
 
@@ -14,6 +16,32 @@ module.exports = {
   setUniqueTestEnvironmentVariables() {
     process.env.UNIQUE_ID = process.env.BUILD_TAG || `${os.userInfo().username}-${dateFormat(new Date(), 'yyyymd_HHMMss')}`;
     process.env.TEST_SETUP_TIME = new Date().toUTCString();
+  },
+  /**
+   * Sets the node environment to 'development-local' by default if it is unset or 'test'
+   * @returns {undefined} - nothing
+   */
+  determineNodeEnvironment() {
+    if (process.env.NODE_ENV !== '' && process.env.NODE_ENV !== 'test' && typeof process.env.NODE_ENV !== 'undefined') {
+      console.log(`NODE_ENV already set to '${process.env.NODE_ENV}'`);
+    } else {
+      process.env.NODE_ENV = 'development-local';
+      console.log(`NODE_ENV is not set. It has been set the default of '${process.env.NODE_ENV}'`);
+    }
+  },
+  /**
+   * Fetches the secrets from vault via a command. The command line approach is used because it
+   * write the file which is then read by the subprocesses that Jest spins up
+   * @returns {undefined} - nothing
+   */
+  fetchAndApplySecretsFromVault() {
+    if (typeof process.env.NODE_ENV === 'undefined') {
+      throw new Error('NODE_ENV not set. Set NODE_ENV: export NODE_ENV=<my_env>');
+    } else {
+      const stdout = childProcess.execSync(`npx nvaultutil fetch -e ${process.env.NODE_ENV}`);
+      console.log(stdout.toString());
+      nvaultutil.applyGlobalVariablesFromFile();
+    }
   },
   /**
    * Starts sauce connect and waits till it is ready to proxy requests

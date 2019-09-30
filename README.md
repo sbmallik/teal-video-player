@@ -9,7 +9,7 @@ This repository contains the test code that executes *visual tests* for new _Tan
 
 * A Bourne-compatible shell, like bash or zsh (or knowledge to execute equivalent commands in your environment)
 * [Git](http://gitscm.com/)
-* [Node 8.9+](http://nodejs.org/)
+* [Node 10.15+](http://nodejs.org/)
 * A Sauce Labs account. Please create a JIRA ticket with Component = 'account' for this purpose.
 
 ### Setup
@@ -34,47 +34,115 @@ Certain parameters such as authentication and other internal variables are obtai
 1. `APPLITOOLS_API_KEY` - This key provides access to the Applitools Test Manager (and the Team within)
 1. `APPLITOOLS_BATCH_ID` - This value is used to group the tests by a specific criteria (like browser, platform, test-name etc)
 1. `APPLITOOLS_SERVER_URL` - This specifies the Applitools test manager URL
+1. `USE_SAUCE_CONNECT` - This boolean variable, specifies the necessity of Sauce Connect
 
 All these variables must be exported so that it allows all child processes to inherit. These are generally set inside the user profile.
 
 ### Running Tests
 
-By default Jest tests runs against a local `chromedriver`, but in the current repository local execution isn't supported at the moment. Instead the tests are executed remotely in Sauce Labs cloud based environment. At the moment this is supported for desktop environment only and the initial release will support Chrome browser.
+The test execution environment is either **local** or cloud based such as **Saucelabs**. In the former case the tests runs against a local `chromedriver` instance for desktop variant only. In case mobile environments are required to test the most viable way would be to use the latter option. This facilitates the use of virtual devices on which the tests can be executed.
 
-The following test execution options are available:
-
-#### Run all tests
-
-The following command executes all test files having names like `*.test.js`.
+The test execution occurs after all test files are generated at a particular location (per jest configuration file). The test files are generated based on the test data for each test. This reduces the complexity in the repository. The following command generates and executes all tests in sequence:
 ```
-$ npm test -- --detectOpenHandles
+$ npm run test:visual
 ```
+#### Runtime environment
+
+Most of the time, the tests are executed in lower environments (such as development or staging) so that the bugs are caught during code development. However, such environment are generally behind the corporate firewall, which inhibits communication with Saucelabs based run time environments. test devices. The Sauce Connect tunnel provides a mean to run the tests in Saucelabs. The tunnel mechanism allows the above communication to proceed across the corporate firewall. If the test environment uses above feature the environment variable `USE_SAUCE_CONNECT` is set to `true`.
+
+### NPM scripts
+
+The following commands can be used for running and generating tests:
+* `npm run test:visual`: Cleans test directory, generates all visual tests, and runs tests
+* `npm run test:visual-generate`: Cleans test directory and generates visual tests. Use a command like `npm run test:visual-generate -- --tags tag1` to pass in parameters to the script.
+* `npm run test:visual-no-generate`: Runs the existings tests in the test directory
+
+Unfortunately the current way the generation works is that tests must be generated with the filters and then ran. Filtering after generation is left to Jest.
+
+### Generating tests
+
+Currently, the configuration file located at `test/visual/lib/test-configuration.js` is required and each configuration is ran through the template located at `test/visual/lib/test-template.js`.
 
 #### Filtering tests
 
-To run a single test, simply add the test in the command line as follows:
-```
-$ npm test -- -t <test-name>
-```
-The `test-name` is the name of the test file to run. The test file name should comply to any qualifiers specified in the configuration.
+Filtering uses the test configuration and passed in parameters on the command line to filter tests to the liking of the user.
 
-In order to filter tests by filename a flag is added that accepts a regular expression of the `test-spec`. Please note this can be the name string located in either `describe` or `it` blocks. Therefore the command gets modified to:
+Filtering tests during generation can be done by `name`, `tags`, `only`, `ignoreTags`. All of these are properties on the test configuration object. Filtering strategies **can not** be combined meaning just one will be used if multiple are provided. The precedence is as follows: `only`, `name`, `tags`, `ignoreTags`. For example if `only` and `name` are specified then `only` will be used.
+
+To generate a single test, specify the name like so
 ```
-$ npm test -- --detectOpenHandles -t="<reguar-expression>"
+$ npm run test:visual-generate -- --name my-visual-test
 ```
 
-#### Disabling the code output
-
-Optionally the test logs can be disabled (with the exception of errors) by using this flag:
+To generate tests with tags specify the tags like so
 ```
-$ npm test -- --detectOpenHandles --silent
+$ npm run test:visual-generate -- --tags tag1
+$ npm run test:visual-generate -- --tags tag1,tag2,tag3
 ```
-
-#### Parallel execution
-
-An easy way to set the parallel test execution is to ignore the cache as mentioned in this [issue link](https://github.com/facebook/jest/issues/5818). By default the cache is used and the tests are executed sequentially. This is achieved by using a command line parameter as below:
+To generate tests by ignoring some tags specify the ignoreTags like so
 ```
-$ npm test -- --detectOpenHandles --no-cache
+$ npm run test:visual-generate -- --ignoreTags tag1
+$ npm run test:visual-generate -- --ignoreTags tag1,tags2,tag3
 ```
 
-This repository will be used for demonstration pupose only - therefore no *Continuous Integration* code (Jenkins Pipeline for example) was added.
+### Test Configuration
+
+The test configuration is located in the file `test/visual/lib/test-configuration.js`.
+
+The following properties are supported.
+
+* `tags`
+  * An array of strings for specify a group that the visual test belongs to
+  * Example: `tags: ['module:hero3up', 'critical']`
+* `name`
+  * A string denoting the name of the test. This will be used to name the test in applitools and the name of the file.
+  * Must be unique
+  * Example: `name: 'hero-3-up-variant-a`
+* `urlEnding`
+  * A string that is postfixed to the configured base url
+  * Example: `urlEnding: '/?gnt-test-alert=off&gnt-test-hero3up=variant-c'`
+* `defaultSelectorValue`
+  * A string that is used whenever a selector value is required. Can be overriden by individual selector values.
+  * `defaultSelectorValue: '.gnt_m_hero`
+* `selector`
+  * An object containing information for how to select the element to snapshot for the visual test
+* `selector.function`
+  * A string that is used to denote the function format the selector using the selenium `By` object
+  * Example: `function: `selector: 'By.css'`
+* `selector.value`
+  * A string that is used as the parameter to the `selector.function` defined above
+  * Defaults to `defaultSelectorValue`
+  * Example: `value: '.gnt_m_hero_3up'`
+* `scrollToViewElement`
+  * An object containing information on which element wait for and which element to scroll the browser to view
+* `scrollToViewElement.function`
+  * A string that is used to denote the function to format the selector using the selenium `By` object
+  * This is for the element to wait for
+  * Example: `function: `selector: 'By.css'`
+* `scrollToViewElement.value`
+  * A string that is used as the parameter to the `scrollToViewElement.function` defined above
+  * This is for the element to wait for
+  * Defaults to `defaultSelectorValue`
+  * Example: `value: '.gnt_m_hero_3up'`
+* `scrollToViewElement.documentFunction`
+  * A string that is used to denote the function to format the selector in using the browser `document` object
+  * This is for the scroll to element script
+  * Example: `documentFunction: 'querySelector'`
+* `scrollToViewElement.documentValue`
+  * A string that is used as the parameter to the `scrollToViewElement.documentFunction`
+  * This is for the scroll to element script
+  * Defaults to `defaultSelectorValue`
+  * Example: `documentValue: 'div.gnt_m.gnt_m_mpop'`
+* `waitBeforeScreenshot`
+  * Time in milliseconds to wait before applitools takes a screenshot
+  * Defaults to no wait
+  * Example: `waitBeforeScreenshot: 10000`
+
+
+### Jest Configuration file
+
+Please check the configuration file at `test/visual/jestVisualConfig.json` for options used when Jest is ran.
+
+The configuration file sets the folder and filename format for the tests. All test file names should be formatted as follows: `*.visual.test.js`. By default all console outputs other than errors are suppressed. The parallel execution are set to default, unless specifically overridden per the CI environment.
+
+This repository will be used for demonstration purpose only - therefore no *Continuous Integration* code (Jenkins Pipeline for example) was added.
