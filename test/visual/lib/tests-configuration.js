@@ -63,7 +63,7 @@ module.exports = [
     urlEnding: '/videos/news/health/2019/06/17/worst-time-eating-raw-cookie-dough-now/1475124001/?no_ads=true',
     defaultSelectorValue: '#mainContentSection',
     selector: {
-      function: 'By.css',
+      function: 'By.css'
     }
   },
   {
@@ -72,7 +72,7 @@ module.exports = [
     urlEnding: '/entertainment/?no_ads=true',
     defaultSelectorValue: 'cta-generic-text',
     selector: {
-      function: 'By.css',
+      function: 'By.css'
     },
     scrollToViewElement: {
       function: 'By.css',
@@ -87,7 +87,7 @@ module.exports = [
     urlEnding: '/life/?no_ads=true',
     defaultSelectorValue: 'cta-newsletter-signup',
     selector: {
-      function: 'By.css',
+      function: 'By.css'
     },
     scrollToViewElement: {
       function: 'By.css',

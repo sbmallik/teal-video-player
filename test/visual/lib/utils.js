@@ -2,7 +2,7 @@
 
 const {
         Builder, By, until, ConsoleLogHandler, Eyes, MatchLevel, CorsIframeHandle,
-        VisualGridRunner, BrowserType, DeviceName, ScreenOrientation, ChromeOptions
+        VisualGridRunner, DeviceName, ScreenOrientation, ChromeOptions
       } = require('./constants.js'),
       config = require('config'),
       SauceLabs = require('saucelabs'),
@@ -48,11 +48,9 @@ module.exports = {
     const config = eyes.getConfiguration();
     // Define the visual grid configurations here
     // More details are listed here: https://raw.githubusercontent.com/chromium/chromium/0aee4434a4dba42a42abaea9bfbc0cd196a63bc1/third_party/blink/renderer/devtools/front_end/emulated_devices/module.json
-//    config.addBrowser(1280, 960, BrowserType.CHROME);
-//    config.addBrowser(1280, 960, BrowserType.FIREFOX);
     config.addDeviceEmulation(DeviceName.iPhone_X, ScreenOrientation.PORTRAIT);
     config.addDeviceEmulation(DeviceName.Pixel_2, ScreenOrientation.PORTRAIT);
-//    config.addDeviceEmulation(DeviceName.Nokia_N9, ScreenOrientation.PORTRAIT);
+    //    config.addDeviceEmulation(DeviceName.Nokia_N9, ScreenOrientation.PORTRAIT);
     return config;
   },
   remoteDriverInit(testName) {
@@ -66,8 +64,9 @@ module.exports = {
   },
   async driverInit() {
     // add code here to update env ver USE_SAUCE_CONNECT
-    let driver = await new Builder().forBrowser('chrome').setChromeOptions(new ChromeOptions().setMobileEmulation({deviceName: 'Pixel 2'}).headless()).build();
-//    let driver = await new Builder().forBrowser('chrome').setChromeOptions(new ChromeOptions().setMobileEmulation({deviceName: 'Pixel 2'})).build();
+    let driver = await new Builder().forBrowser('chrome').setChromeOptions(new ChromeOptions().setMobileEmulation({
+      deviceName: 'Pixel 2'
+    }).headless()).build();
     await driver.manage().window().setRect({
       width: 375,
       height: 812

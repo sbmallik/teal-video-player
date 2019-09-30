@@ -4,7 +4,7 @@ module.exports = (configuration) => {
   return `
     'use strict';
 
-    const {By, Target, MatchLevel, until} = requireAbs('/test/visual/lib/constants.js'),
+    const {By, Target, until} = requireAbs('/test/visual/lib/constants.js'),
           utils = requireAbs('/test/visual/lib/utils.js'),
           config = require('config');
     
@@ -58,6 +58,7 @@ module.exports = (configuration) => {
         eyes.setForceFullPageScreenshot(true);
         ` : ''}
         ${configuration.layoutMode ? `
+        const MatchLevel = requireAbs('/test/visual/lib/constants.js').MatchLevel;
         eyes.setMatchLevel(MatchLevel.Layout);
         ` : ''}
         ${configuration.waitOnElement ? `
