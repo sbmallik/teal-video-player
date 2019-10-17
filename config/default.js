@@ -44,9 +44,10 @@ module.exports = {
         key: process['vault-client'].testAggregatorApiKey
       }
     },
-    url: 'https://dev-uw.usatoday.com',
-    visual: {
-      dockerizedChrome: process.env.DOCKERIZED_CHROME || 'true'
-    },
+    url: 'https://local.indystar.com',
+    video: {
+      dockerizedChrome: process.env.DOCKERIZED_CHROME || 'true',
+      useSauceConnect: process.env.USE_SAUCE_CONNECT || 'true'
+    }
   }
 };

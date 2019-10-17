@@ -3,10 +3,9 @@
   "globalSetup": "./test/jest-utils/setup.js",
   "globalTeardown": "./test/jest-utils/teardown.js",
   "setupFilesAfterEnv": [
-    "./test/jest-utils/setupFilesAfterEnv.js",
-    "./test/visual/globalSettings.js"
+    "./test/video/setupFilesAfterEnv.js"
   ],
-  "testRegex": "test/visual/tests/.*\\.(visual.test)\\.js",
+  "testRegex": "test/video/tests/.*\\.(video.test)\\.js",
   "testEnvironment": "node",
   "reporters": [ "default", [
     "jest-junit", {

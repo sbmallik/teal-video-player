@@ -10,7 +10,7 @@ const dateFormat = require('dateformat'),
 
 module.exports = {
   /**
-   * Sets the unique id and the setup time environment variables needed for visual tests
+   * Sets the unique id and the setup time environment variables needed for video tests
    * @returns {undefined} - nothing
    */
   setUniqueTestEnvironmentVariables() {
@@ -45,14 +45,15 @@ module.exports = {
   },
   /**
    * Starts sauce connect and waits till it is ready to proxy requests
+   * @param {object} config - configuration data
    * @param {string} tunnelId - sauce connect tunnel identifier
    * @returns {undefined} - nothing
    */
-  async useSauceConnect(tunnelId) {
+  async useSauceConnect(config, tunnelId) {
     let options;
     options = {
-      username: process.env.SAUCE_USERNAME,
-      accessKey: process.env.SAUCE_ACCESS_KEY,
+      username: config.test.api.sauce.user,
+      accessKey: config.test.api.sauce.key,
       tunnelIdentifier: tunnelId
     };
     await sauce.connect(options);

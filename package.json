@@ -1,6 +1,6 @@
 {
   "name": "eyes-jest",
-  "description": "Applitools visual testing with JEST and Sauce Labs",
+  "description": "Teal player video testing with JEST and Sauce Labs",
   "version": "0.1.0",
   "private": false,
   "license": "ISC",
@@ -12,10 +12,10 @@
     "selenium",
     "webdriver"
   ],
-  "bugs": "https://github.com/sbmallik/eyes-jest/issues",
+  "bugs": "https://github.com/sbmallik/teal-video-player/issues",
   "repository": {
     "type": "git",
-    "url": "https://github.com/sbmallik/eyes-jest"
+    "url": "https://github.com/sbmallik/teal-video-player"
   },
   "scripts": {
     "test:lint": "gulp lint-all",
@@ -24,18 +24,15 @@
     "test:lint-ejs": "gulp lint-ejs-templates",
     "test:lint-html": "gulp lint-html-templates",
     "test:lint-js": "gulp lint-scripts",
-    "test:visual": "npm run test:visual-generate && jest --config ./test/visual/jestVisualConfig.json",
-    "test:visual-generate": "node test/visual/lib/generate.js --cleanTestDirectory",
-    "test:visual-no-generate": "jest --config ./test/visual/jestVisualConfig.json"
+    "test:video": "jest --config ./test/video/jestVisualConfig.json"
   },
   "dependencies": {
     "config": "^3.2.2",
     "node-vault-utility": "1.13.0"
   },
   "devDependencies": {
-    "@applitools/eyes-selenium": "4.29.3",
-    "@applitools/visual-grid-client": "12.32.0",
     "chromedriver": "^77.0.0",
+    "dateformat": "^3.0.3",
     "jest": "^24.9.0",
     "jest-cli": "^24.9.0",
     "jest-junit": "^8.0.0",
