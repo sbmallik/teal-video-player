@@ -5,9 +5,6 @@
 # Logs
 **/*.log
 
-#package lock file
-**/package-lock.json
-
 #vault secrets file
 **/.nvaultutil.json
 

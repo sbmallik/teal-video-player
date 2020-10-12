@@ -2,7 +2,7 @@
 
 const {Builder, By, until, ChromeOptions} = require('./constants.js'),
       config = require('config'),
-      SauceLabs = require('saucelabs'),
+      SauceLabs = require('saucelabs').default,
       username = config.get('test.api.sauce.user'),
       password = config.get('test.api.sauce.key'),
       seleniumUrl = `http://${username}:${password}@ondemand.saucelabs.com:4444/wd/hub`,
@@ -43,7 +43,7 @@ module.exports = {
   updateSauce(driver, testName, testStatus) {
     driver.getSession().then((session) => {
       console.log(`SauceOnDemandSessionID= + ${session.getId()}, Test name = ${testName}, Test status = ${testStatus}`);
-      saucelabs.updateJob(session.getId(), {
+      saucelabs.updateJob(process.env.SAUCE_USERNAME, session.getId(), {
         passed: testStatus === 'passed',
         name: testName
       }, () => {});

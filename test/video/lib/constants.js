@@ -5,7 +5,7 @@ const {Builder, By, until} = require('selenium-webdriver'),
       capabilities = {
         desktopChrome: {
           browserName: 'chrome',
-          version: '77',
+          version: '85.0',
           platform: 'macOS 10.14',
           screenResolution: '1600x1200'
         },

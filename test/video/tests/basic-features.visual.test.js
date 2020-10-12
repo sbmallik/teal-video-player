@@ -9,11 +9,11 @@ describe('teal player test', () => {
     
   beforeEach(async() => {
     driver = await utils.remoteDriverInit();
-    await driver.get(global.baseUrl + '/story/section/2001/01/01/article-name/1/?gnt-test-article=text-short,pos3-video&gnt-test-navpromo&gnt-test-alert=off&gnt-hostname-override=www.usatoday.com&gnt-test-navigation#gnt-disable-x&gnt-disable-taboola');
+    await driver.get(global.baseUrl + '/story/news/2001/01/01/article-name/1/?gnt-test-article=text-short,pos3-video&gnt-test-navpromo&gnt-test-alert=off&gnt-hostname-override=www.usatoday.com&gnt-test-navigation#gnt-disable-x&gnt-disable-taboola');
   });
     
   testName = test('basic-features', async() => {
-    await driver.wait(until.elementLocated(By.css('.gnt_em_vp_w')), 30000);
+    await driver.wait(until.elementLocated(By.css('.gnt_em_vp_w')), global.ELEMENT_TIMEOUT);
     await driver.executeScript((pageElement) => {
       let targetElement = document.querySelector(pageElement);
       targetElement.scrollIntoView(true);
@@ -25,6 +25,7 @@ describe('teal player test', () => {
     await driver.findElement(By.css('.gnt_em_vp_svg')).click();
     const videoPlayer = await driver.wait(until.elementLocated(By.css('.tealplayer-play-toggle')), global.ELEMENT_TIMEOUT);
     await driver.wait(until.elementIsVisible(videoPlayer), global.ELEMENT_TIMEOUT);
+    /*
     const iframe1 = await driver.wait(until.elementLocated(By.css('.tealplayer-ad-container iframe')), global.ELEMENT_TIMEOUT);
     await driver.wait(until.elementIsVisible(iframe1), global.ELEMENT_TIMEOUT);
     await driver.switchTo().frame(iframe1);
@@ -36,6 +37,7 @@ describe('teal player test', () => {
 
     await driver.findElement(By.css('.videoAdUiSkipButton')).click();
     await driver.switchTo().defaultContent();
+    */
 
     await driver.wait(() => {
       return driver.findElements(By.css('.teal-video-wrap.teal-ad-playback')).then((found) => {

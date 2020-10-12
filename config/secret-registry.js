@@ -9,7 +9,7 @@ module.exports = [
     globalVariable: 'contentApiKey'
   },
   {
-    vaultPath: `secret/quality-engineering/applitools/quality-engineering`,
+    vaultPath: 'secret/quality-engineering/applitools/quality-engineering',
     secretKey: 'key',
     globalVariable: 'applitoolsApiKey'
   },

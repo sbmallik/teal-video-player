@@ -10,7 +10,7 @@
   "reporters": [ "default", [
     "jest-junit", {
       "outputDirectory": "test/reports",
-      "outputName": "reportVisual.xml"
+      "outputName": "reportVideo.xml"
     }]
   ],
   "maxConcurrency": 1,

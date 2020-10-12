@@ -18,7 +18,7 @@ module.exports = {
     navigationApi: {
       endpoint: 'https://api.gannett-cdn.com/taxonomy/v4/navigation/schema/id/',
       key: process['vault-client'].navigationKey
-    },
+    }
   },
   gannettCdn: 'https://www.gannett-cdn.com',
   gannettCdnDomain: 'gannett-cdn.com',
