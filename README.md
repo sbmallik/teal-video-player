@@ -4,7 +4,7 @@
 
 ## Test Framework
 
-This repository contains the test code that executes *video tests* with the *Teal Player* for new _Tangent_ web pages. The JEST test runner is used as this is stadardized for testing. The code uses NodeJS, which in turn uses Selenium-Webdriver to deal with all user interactions with the web pages. *Sauce Labs* cloud based test platform is used to run the tests.
+This repository contains the test code that executes **video tests** with the **Teal Player** for new _Tangent_ web pages. The JEST test runner is used as this is stadardized for testing. The code uses NodeJS, which in turn uses Selenium-Webdriver to deal with all user interactions with the web pages. *Sauce Labs* cloud based test platform is used to run the tests.
 
 ### Pre-requisites
 
