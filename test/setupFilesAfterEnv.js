@@ -4,7 +4,7 @@ Jest sets up a new environment for every test file. Configs are loaded and node 
 */
 
 /* Allow absolute paths for reference files based on this folder */
-require('../jest-utils/require-abs.js')(__dirname + '/../..');
+require('./jest-utils/require-abs.js')(__dirname + '/..');
 
 const nvaultutil = require('node-vault-utility');
 nvaultutil.applyGlobalVariablesFromFile();

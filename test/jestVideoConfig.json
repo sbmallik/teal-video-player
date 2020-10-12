@@ -3,7 +3,7 @@
   "globalSetup": "./test/jest-utils/setup.js",
   "globalTeardown": "./test/jest-utils/teardown.js",
   "setupFilesAfterEnv": [
-    "./test/jest-utils/setupFilesAfterEnv.js"
+    "./test/setupFilesAfterEnv.js"
   ],
   "testRegex": "test/scripts/.*\\.(video.test)\\.js",
   "testEnvironment": "node",
