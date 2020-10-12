@@ -18,7 +18,7 @@
   },
   "scripts": {
     "test:lint": "eslint config test test --ext .js",
-    "test:video": "jest --config ./test/video/jestVideoConfig.json"
+    "test:video": "jest --config ./test/jestVideoConfig.json"
   },
   "dependencies": {
     "config": "^3.3.1",

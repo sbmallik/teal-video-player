@@ -1,7 +1,7 @@
 'use strict';
 
-const {By, until} = requireAbs('/test/video/lib/constants.js'),
-      utils = requireAbs('/test/video/lib/utils.js');
+const {By, until} = requireAbs('/test/jest-utils/constants.js'),
+      utils = requireAbs('/test/jest-utils/utils.js');
     
 describe('teal player test', () => {
   let driver, // @type {WebDriver}

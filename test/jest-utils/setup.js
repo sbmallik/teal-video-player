@@ -4,7 +4,7 @@ const path = require('path');
 require('./require-abs.js')(path.resolve(__dirname, '../../') + '/');
 
 const orchestrationHelper = requireAbs('test/jest-utils/orchestration-helper.js'),
-      capabilities = requireAbs('test/video/lib/constants.js').capabilities;
+      capabilities = requireAbs('test/jest-utils/constants.js').capabilities;
 
 module.exports = async function globalSetup() {
 

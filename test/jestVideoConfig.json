@@ -3,9 +3,9 @@
   "globalSetup": "./test/jest-utils/setup.js",
   "globalTeardown": "./test/jest-utils/teardown.js",
   "setupFilesAfterEnv": [
-    "./test/video/setupFilesAfterEnv.js"
+    "./test/jest-utils/setupFilesAfterEnv.js"
   ],
-  "testRegex": "test/video/tests/.*\\.(video.test)\\.js",
+  "testRegex": "test/scripts/.*\\.(video.test)\\.js",
   "testEnvironment": "node",
   "reporters": [ "default", [
     "jest-junit", {
@@ -14,5 +14,5 @@
     }]
   ],
   "maxConcurrency": 1,
-  "rootDir": "../../"
+  "rootDir": "../"
 }
