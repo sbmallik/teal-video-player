@@ -17,7 +17,7 @@ describe('teal player test', () => {
     const tealplayerSpinner = await driver.wait(until.elementLocated(By.css('.tealplayer-spinner')), global.ELEMENT_TIMEOUT);
     await driver.wait(until.elementIsVisible(tealplayerSpinner), global.ELEMENT_TIMEOUT);
     // Wait for the spinner to dissipate
-    await driver.wait(until.elementLocated(By.css('.tealplayer-spinner-hidden')), global.ELEMENT_TIMEOUT);
+    await driver.wait(until.elementLocated(By.css('.tealplayer-spinner-hidden')), 30000);
     // Wait for the pre-roll AD to disaplay
     const preRollAd = await driver.wait(until.elementLocated(By.css('.teal-ad-playback')), global.ELEMENT_TIMEOUT);
     await driver.wait(until.elementIsVisible(preRollAd), global.ELEMENT_TIMEOUT);
